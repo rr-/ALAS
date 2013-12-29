@@ -3,6 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Title="AppLocale Alternative Starter"
 		WindowStartupLocation="CenterScreen"
+		SnapsToDevicePixels="True"
 		ResizeMode="NoResize"
 		SizeToContent="WidthAndHeight"
 		AllowDrop="True"
