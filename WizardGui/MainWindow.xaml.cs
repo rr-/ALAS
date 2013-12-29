@@ -113,6 +113,7 @@ namespace WizardGui
 
 					shortcut.TargetPath = EntryPath;
 					shortcut.WorkingDirectory = EntryDirectory;
+					shortcut.IconLocation = MainWindowData.ProgramPath + ",0";
 
 					shortcut.Description = String.Format("Run \"{0}\" in {1} locale",
 						Path.GetFileName(mainWindowData.ProgramPath),
