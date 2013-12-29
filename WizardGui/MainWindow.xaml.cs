@@ -56,7 +56,7 @@ namespace WizardGui
 				.ToList(); //necessary for getting "SelectedLocale" binding to work
 
 			string iniFilePath = !string.IsNullOrEmpty(EntryDirectory)
-				? Path.Combine(EntryDirectory, "settings.ini")
+				? Path.Combine(EntryDirectory, Path.GetFileNameWithoutExtension(EntryPath) + "-settings.ini")
 				: "settings.ini";
 			iniParser = new IniParser(iniFilePath);
 
@@ -72,7 +72,7 @@ namespace WizardGui
 
 			if (MainWindowData.SelectedLocale == null)
 				MainWindowData.SelectedLocale = MainWindowData.AvailableLocales
-					.FirstOrDefault(locale => locale.ToString().IndexOf("Japan", StringComparison.InvariantCultureIgnoreCase) > 0);
+					.FirstOrDefault(locale => locale.ToString().IndexOf("Japan", StringComparison.InvariantCultureIgnoreCase) >= 0);
 		}
 
 		private void LaunchButtonClick(object sender, RoutedEventArgs eventArgs)
@@ -102,8 +102,8 @@ namespace WizardGui
 					DefaultExt = ".lnk",
 					Filter = "Shortcuts (.lnk)|*.lnk",
 					FileName = String.Format("{0}-{1}",
-						Path.GetFileNameWithoutExtension(mainWindowData.ProgramPath),
-						mainWindowData.SelectedLocale.LocaleInfo.LanguageEnglishName.ToLower())
+						Path.GetFileNameWithoutExtension(MainWindowData.ProgramPath),
+						MainWindowData.SelectedLocale.LocaleInfo.LanguageEnglishName.ToLower())
 				};
 
 				bool? result = saveDialog.ShowDialog();
@@ -116,14 +116,14 @@ namespace WizardGui
 					shortcut.IconLocation = MainWindowData.ProgramPath + ",0";
 
 					shortcut.Description = String.Format("Run \"{0}\" in {1} locale",
-						Path.GetFileName(mainWindowData.ProgramPath),
-						mainWindowData.SelectedLocale.LocaleInfo.LanguageEnglishName);
+						Path.GetFileName(MainWindowData.ProgramPath),
+						MainWindowData.SelectedLocale.LocaleInfo.LanguageEnglishName);
 
 					shortcut.Arguments = String.Format("--locale {0} --cwd \"{1}\" --path \"{2}\" -- {3}",
-						mainWindowData.SelectedLocale.LocaleInfo.LocaleName,
-						mainWindowData.ProgramWorkingDirectory,
-						mainWindowData.ProgramPath,
-						string.Join(" ", ParseArguments(mainWindowData.ProgramArguments).Select(arg => "\"" + arg + "\"")));
+						MainWindowData.SelectedLocale.LocaleInfo.LocaleName,
+						MainWindowData.ProgramWorkingDirectory,
+						MainWindowData.ProgramPath,
+						string.Join(" ", ParseArguments(MainWindowData.ProgramArguments).Select(arg => "\"" + arg + "\"")));
 
 					shortcut.Save();
 				}
