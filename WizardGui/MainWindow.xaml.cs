@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using AppLocaleLib;
-using ini_dotnet;
 using IWshRuntimeLibrary;
 
 namespace WizardGui
@@ -15,7 +14,6 @@ namespace WizardGui
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 		private MainWindowData mainWindowData;
-		private readonly IniParser iniParser;
 
 		public MainWindowData MainWindowData
 		{
@@ -25,22 +23,6 @@ namespace WizardGui
 				mainWindowData = value;
 				if (PropertyChanged != null)
 					PropertyChanged(this, new PropertyChangedEventArgs("MainWindowData"));
-			}
-		}
-
-		private string EntryDirectory
-		{
-			get
-			{
-				return Path.GetDirectoryName(EntryPath);
-			}
-		}
-
-		private string EntryPath
-		{
-			get
-			{
-				return System.Reflection.Assembly.GetEntryAssembly().Location;
 			}
 		}
 
@@ -55,20 +37,7 @@ namespace WizardGui
 				.OrderBy(localeInfo => localeInfo.ToString())
 				.ToList(); //necessary for getting "SelectedLocale" binding to work
 
-			string iniFilePath = !string.IsNullOrEmpty(EntryDirectory)
-				? Path.Combine(EntryDirectory, Path.GetFileNameWithoutExtension(EntryPath) + "-settings.ini")
-				: "settings.ini";
-			iniParser = new IniParser(iniFilePath);
-
-			if (iniParser.Root.HasSection("Gui"))
-			{
-				var iniSection = iniParser.Root["Gui"];
-				MainWindowData.ProgramPath = iniSection.TryGetString("ProgramPath");
-				MainWindowData.ProgramArguments = iniSection.TryGetString("ProgramArguments");
-				MainWindowData.ProgramWorkingDirectory = iniSection.TryGetString("ProgramWorkingDirectory");
-				MainWindowData.SelectedLocale = MainWindowData.AvailableLocales
-					.FirstOrDefault(locale => locale.ToString() == iniSection.TryGetString("SelectedLocale"));
-			}
+			LoadConfig();
 
 			if (MainWindowData.SelectedLocale == null)
 				MainWindowData.SelectedLocale = MainWindowData.AvailableLocales
@@ -111,8 +80,8 @@ namespace WizardGui
 				{
 					IWshShortcut shortcut = (new WshShell()).CreateShortcut(saveDialog.FileName);
 
-					shortcut.TargetPath = EntryPath;
-					shortcut.WorkingDirectory = EntryDirectory;
+					shortcut.TargetPath = App.EntryPath;
+					shortcut.WorkingDirectory = App.EntryDirectory;
 					shortcut.IconLocation = MainWindowData.ProgramPath + ",0";
 
 					shortcut.Description = String.Format("Run \"{0}\" in {1} locale",
@@ -158,14 +127,7 @@ namespace WizardGui
 
 		private void WindowClosed(object sender, EventArgs e)
 		{
-			if (!iniParser.Root.HasSection("Gui"))
-				iniParser.Root.AddSection("Gui");
-			var iniSection = iniParser.Root["Gui"];
-			iniSection.SetString("ProgramPath", MainWindowData.ProgramPath);
-			iniSection.SetString("ProgramArguments", MainWindowData.ProgramArguments);
-			iniSection.SetString("ProgramWorkingDirectory", MainWindowData.ProgramWorkingDirectory);
-			iniSection.SetString("SelectedLocale", MainWindowData.SelectedLocale != null ? MainWindowData.SelectedLocale.ToString() : "");
-			iniParser.Save();
+			UpdateConfig();
 		}
 
 		private void TextBoxPreviewDragEnterOrOver(object sender, DragEventArgs eventArgs)
@@ -191,6 +153,31 @@ namespace WizardGui
 			{
 				MainWindowData.ProgramPath = openDialog.FileName;
 			}
+		}
+
+		private void LoadConfig()
+		{
+			if (!((App) Application.Current).IniParser.Root.HasSection("Gui"))
+				return;
+
+			var guiSection = ((App)Application.Current).IniParser.Root["Gui"];
+			MainWindowData.ProgramPath = guiSection.GetString("ProgramPath");
+			MainWindowData.ProgramArguments = guiSection.GetString("ProgramArguments");
+			MainWindowData.ProgramWorkingDirectory = guiSection.GetString("ProgramWorkingDirectory");
+			MainWindowData.SelectedLocale = MainWindowData.AvailableLocales
+				.FirstOrDefault(locale => locale.ToString() == guiSection.GetString("SelectedLocale"));
+		}
+
+		private void UpdateConfig()
+		{
+			if (!((App)Application.Current).IniParser.Root.HasSection("Gui"))
+				((App)Application.Current).IniParser.Root.AddSection("Gui");
+
+			var guiSection = ((App)Application.Current).IniParser.Root["Gui"];
+			guiSection.SetString("ProgramPath", MainWindowData.ProgramPath);
+			guiSection.SetString("ProgramArguments", MainWindowData.ProgramArguments);
+			guiSection.SetString("ProgramWorkingDirectory", MainWindowData.ProgramWorkingDirectory);
+			guiSection.SetString("SelectedLocale", MainWindowData.SelectedLocale != null ? MainWindowData.SelectedLocale.ToString() : "");
 		}
 
 		static private IEnumerable<string> ParseArguments(string commandLine)

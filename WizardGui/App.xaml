@@ -3,6 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		x:Class="WizardGui.App"
 		Startup="AppStartup"
+		Exit="AppExit"
 		StartupUri="MainWindow.xaml">
 	<Application.Resources>
 		<ResourceDictionary>
