@@ -178,6 +178,21 @@ namespace WizardGui
 			}
 		}
 
+		private void ChooseTargetProgramClick(object sender, RoutedEventArgs eventArgs)
+		{
+			var openDialog = new Microsoft.Win32.OpenFileDialog
+			{
+				DefaultExt = ".exe",
+				Filter = "Executable files (.exe)|*.exe"
+			};
+
+			bool? result = openDialog.ShowDialog();
+			if (result == true)
+			{
+				MainWindowData.ProgramPath = openDialog.FileName;
+			}
+		}
+
 		static private IEnumerable<string> ParseArguments(string commandLine)
 		{
 			const string fullRegex = "^(((?<quote>([\"']|))(?<arg>.+?)\\k<quote>)(\\s+|$))+";
