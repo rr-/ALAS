@@ -4,16 +4,16 @@ namespace WizardGui
 {
 	public class EncapsulatedLocaleInfo
 	{
-		private readonly LocaleInfo localeInfo;
+		public LocaleInfo LocaleInfo { get; private set; }
 
 		public EncapsulatedLocaleInfo(LocaleInfo value)
 		{
-			localeInfo = value;
+			LocaleInfo = value;
 		}
 
 		public override string ToString()
 		{
-			return string.Format("{0}", localeInfo.DisplayEnglishName);
+			return string.Format("{0}", LocaleInfo.DisplayEnglishName);
 		}
 	}
 }

@@ -61,7 +61,7 @@ namespace AppLocaleLib
 			};
 		}
 
-		private string LocaleIdToLocaleName(uint localeId)
+		public string LocaleIdToLocaleName(uint localeId)
 		{
 			var lpcData = new System.Text.StringBuilder(256);
 			var ret = LocaleManaged.LCIDToLocaleName(localeId, lpcData, lpcData.Capacity, 0);
@@ -69,6 +69,13 @@ namespace AppLocaleLib
 				return null;
 
 			return lpcData.ToString().Substring(0, ret - 1);
+		}
+
+		public uint LocaleNameToLocaleId(string localeName)
+		{
+			var lpcData = new System.Text.StringBuilder(256);
+			lpcData.Append(localeName);
+			return (uint) LocaleManaged.LocaleNameToLCID(lpcData, 0);
 		}
 
 		private string GetLocaleInfo(string localeName, LocaleManaged.LCTYPE infoTypeId)
@@ -83,20 +90,5 @@ namespace AppLocaleLib
 
 			return lpcData.ToString().Substring(0, ret - 1);
 		}
-	}
-
-	public class LocaleInfo
-	{
-		public string LocaleName { get; set; }
-		public string LanguageLocalizedName { get; set; }
-		public string LanguageEnglishName { get; set; }
-		public string LanguageNativeName { get; set; }
-		public string CountrySymbol { get; set; }
-		public string CountryLocalizedName { get; set; }
-		public string CountryEnglishName { get; set; }
-		public string CountryNativeName { get; set; }
-		public string DisplayLocalizedName { get; set; }
-		public string DisplayNativeName { get; set; }
-		public string DisplayEnglishName { get; set; }
 	}
 }

@@ -12,6 +12,9 @@ namespace AppLocaleLib
 		[DllImport(@"kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		public static extern int LCIDToLocaleName(uint uiLocale, StringBuilder lpName, int cchName, int dwFlags);
 
+		[DllImport(@"kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+		public static extern int LocaleNameToLCID(StringBuilder lpName, int dwFlags);
+
 		public delegate bool EnumLocalesProcExDelegate(
 			[MarshalAs(UnmanagedType.LPWStr)] String lpLocaleString, LOCALETYPE dwFlags, int lParam);
 

@@ -10,5 +10,7 @@ namespace AppLocaleLib
 		bool HasLocale(string localeName);
 		LocaleInfo GetLocaleInfo(uint localeId);
 		LocaleInfo GetLocaleInfo(string localeName);
+		string LocaleIdToLocaleName(uint localeId);
+		uint LocaleNameToLocaleId(string localeName);
 	}
 }
