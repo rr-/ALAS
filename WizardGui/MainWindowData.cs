@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 
 namespace WizardGui
 {
@@ -42,6 +43,15 @@ namespace WizardGui
 			{
 				programPath = value;
 				OnPropertyChanged("ProgramPath");
+				if (!string.IsNullOrWhiteSpace(ProgramPath))
+					try
+					{
+						ProgramWorkingDirectory = Path.GetDirectoryName(ProgramPath);
+					}
+					catch
+					{
+						ProgramWorkingDirectory = "";
+					}
 			}
 		}
 

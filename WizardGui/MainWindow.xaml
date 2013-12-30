@@ -48,17 +48,17 @@
 					</TextBlock>
 				</Label.ToolTip>
 			</Label>
-			<Label Grid.Row="2" Grid.Column="0" Margin="4" Content="Program arguments:">
-				<Label.ToolTip>
-					<TextBlock MaxWidth="300" TextWrapping="WrapWithOverflow">
-						Some programs might need additional command line parameters (arguments) in order to work or to control some settings. You probably don't need to change it.
-					</TextBlock>
-				</Label.ToolTip>
-			</Label>
-			<Label Grid.Row="3" Grid.Column="0" Margin="4" Content="Program starting directory:">
+			<Label Grid.Row="2" Grid.Column="0" Margin="4" Content="Program starting directory:">
 				<Label.ToolTip>
 					<TextBlock MaxWidth="300" TextWrapping="WrapWithOverflow">
 						Some programs might need to be executed from particular folder in order to work. You probably don't need to change it.
+					</TextBlock>
+				</Label.ToolTip>
+			</Label>
+			<Label Grid.Row="3" Grid.Column="0" Margin="4" Content="Program arguments:">
+				<Label.ToolTip>
+					<TextBlock MaxWidth="300" TextWrapping="WrapWithOverflow">
+						Some programs might need additional command line parameters (arguments) in order to work or to control some settings. You probably don't need to change it.
 					</TextBlock>
 				</Label.ToolTip>
 			</Label>
@@ -86,11 +86,11 @@
 				<Button Grid.Column="1" Margin="4" Content="&#x2026;" Padding="5,2" Click="ChooseTargetProgramClick"/>
 			</Grid>
 			<TextBox Grid.Row="2" Grid.Column="1" Margin="4"
-				Text="{Binding MainWindowData.ProgramArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Window}"
+				Text="{Binding MainWindowData.ProgramWorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Window}"
 				PreviewDragEnter="TextBoxPreviewDragEnterOrOver"
 				PreviewDragOver="TextBoxPreviewDragEnterOrOver"/>
 			<TextBox Grid.Row="3" Grid.Column="1" Margin="4"
-				Text="{Binding MainWindowData.ProgramWorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Window}"
+				Text="{Binding MainWindowData.ProgramArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Window}"
 				PreviewDragEnter="TextBoxPreviewDragEnterOrOver"
 				PreviewDragOver="TextBoxPreviewDragEnterOrOver"/>
 		</Grid>
