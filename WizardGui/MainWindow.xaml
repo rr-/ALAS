@@ -34,10 +34,34 @@
 				<ColumnDefinition Width="300"/>
 			</Grid.ColumnDefinitions>
 
-			<Label Grid.Row="0" Grid.Column="0" Margin="4" Content="Language:"/>
-			<Label Grid.Row="1" Grid.Column="0" Margin="4" Content="Program path:"/>
-			<Label Grid.Row="2" Grid.Column="0" Margin="4" Content="Program arguments:"/>
-			<Label Grid.Row="3" Grid.Column="0" Margin="4" Content="Program starting directory:"/>
+			<Label Grid.Row="0" Grid.Column="0" Margin="4" Content="Language:">
+				<Label.ToolTip>
+					<TextBlock MaxWidth="200" TextWrapping="WrapWithOverflow">
+						Target locale you want to run the program in.
+					</TextBlock>
+				</Label.ToolTip>
+			</Label>
+			<Label Grid.Row="1" Grid.Column="0" Margin="4" Content="Program path:">
+				<Label.ToolTip>
+					<TextBlock MaxWidth="300" TextWrapping="WrapWithOverflow">
+						Path to target program you want to run.
+					</TextBlock>
+				</Label.ToolTip>
+			</Label>
+			<Label Grid.Row="2" Grid.Column="0" Margin="4" Content="Program arguments:">
+				<Label.ToolTip>
+					<TextBlock MaxWidth="300" TextWrapping="WrapWithOverflow">
+						Some programs might need additional command line parameters (arguments) in order to work or to control some settings. You probably don't need to change it.
+					</TextBlock>
+				</Label.ToolTip>
+			</Label>
+			<Label Grid.Row="3" Grid.Column="0" Margin="4" Content="Program starting directory:">
+				<Label.ToolTip>
+					<TextBlock MaxWidth="300" TextWrapping="WrapWithOverflow">
+						Some programs might need to be executed from particular folder in order to work. You probably don't need to change it.
+					</TextBlock>
+				</Label.ToolTip>
+			</Label>
 
 			<ComboBox Grid.Row="0" Grid.Column="1" Margin="4"
 					SelectedItem="{Binding MainWindowData.SelectedLocale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Window}"
