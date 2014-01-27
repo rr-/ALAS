@@ -44,6 +44,7 @@ namespace WizardGui
 				programPath = value;
 				OnPropertyChanged("ProgramPath");
 				if (!string.IsNullOrWhiteSpace(ProgramPath))
+				{
 					try
 					{
 						ProgramWorkingDirectory = Path.GetDirectoryName(ProgramPath);
@@ -52,6 +53,7 @@ namespace WizardGui
 					{
 						ProgramWorkingDirectory = "";
 					}
+				}
 			}
 		}
 

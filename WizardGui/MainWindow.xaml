@@ -85,10 +85,17 @@
 					PreviewDragOver="TextBoxPreviewDragEnterOrOver"/>
 				<Button Grid.Column="1" Margin="4" Content="&#x2026;" Padding="5,2" Click="ChooseTargetProgramClick"/>
 			</Grid>
-			<TextBox Grid.Row="2" Grid.Column="1" Margin="4"
-				Text="{Binding MainWindowData.ProgramWorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Window}"
-				PreviewDragEnter="TextBoxPreviewDragEnterOrOver"
-				PreviewDragOver="TextBoxPreviewDragEnterOrOver"/>
+			<Grid Grid.Row="2" Grid.Column="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<TextBox Margin="4"
+					Text="{Binding MainWindowData.ProgramWorkingDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Window}"
+					PreviewDragEnter="TextBoxPreviewDragEnterOrOver"
+					PreviewDragOver="TextBoxPreviewDragEnterOrOver"/>
+				<Button Grid.Column="1" Margin="4" Content="&#x2026;" Padding="5,2" Click="ChooseWorkingDirectoryClick"/>
+			</Grid>
 			<TextBox Grid.Row="3" Grid.Column="1" Margin="4"
 				Text="{Binding MainWindowData.ProgramArguments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=Window}"
 				PreviewDragEnter="TextBoxPreviewDragEnterOrOver"

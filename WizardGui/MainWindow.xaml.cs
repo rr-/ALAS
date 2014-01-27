@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using AppLocaleLib;
 using IWshRuntimeLibrary;
+using Ookii.Dialogs.Wpf;
 
 namespace WizardGui
 {
@@ -66,7 +67,7 @@ namespace WizardGui
 		{
 			try
 			{
-				var saveDialog = new Microsoft.Win32.SaveFileDialog
+				var dialog = new VistaSaveFileDialog
 				{
 					DefaultExt = ".lnk",
 					Filter = "Shortcuts (.lnk)|*.lnk",
@@ -75,10 +76,10 @@ namespace WizardGui
 						MainWindowData.SelectedLocale.LocaleInfo.LanguageEnglishName.ToLower())
 				};
 
-				bool? result = saveDialog.ShowDialog();
+				bool? result = dialog.ShowDialog();
 				if (result == true)
 				{
-					IWshShortcut shortcut = (new WshShell()).CreateShortcut(saveDialog.FileName);
+					IWshShortcut shortcut = (new WshShell()).CreateShortcut(dialog.FileName);
 
 					shortcut.TargetPath = App.EntryPath;
 					shortcut.WorkingDirectory = App.EntryDirectory;
@@ -142,16 +143,27 @@ namespace WizardGui
 
 		private void ChooseTargetProgramClick(object sender, RoutedEventArgs eventArgs)
 		{
-			var openDialog = new Microsoft.Win32.OpenFileDialog
+			var dialog = new VistaOpenFileDialog
 			{
 				DefaultExt = ".exe",
 				Filter = "Executable files (.exe)|*.exe"
 			};
 
-			bool? result = openDialog.ShowDialog();
+			bool? result = dialog.ShowDialog();
 			if (result == true)
 			{
-				MainWindowData.ProgramPath = openDialog.FileName;
+				MainWindowData.ProgramPath = dialog.FileName;
+			}
+		}
+
+		private void ChooseWorkingDirectoryClick(object sender, RoutedEventArgs eventArgs)
+		{
+			var dialog = new VistaFolderBrowserDialog();
+
+			bool? result = dialog.ShowDialog(this);
+			if (result == true)
+			{
+				MainWindowData.ProgramWorkingDirectory = dialog.SelectedPath;
 			}
 		}
 
