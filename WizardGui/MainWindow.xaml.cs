@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using AppLocaleLib;
-using IWshRuntimeLibrary;
 using Ookii.Dialogs.Wpf;
 
 namespace WizardGui
@@ -79,11 +78,19 @@ namespace WizardGui
 				bool? result = dialog.ShowDialog();
 				if (result == true)
 				{
-					IWshShortcut shortcut = (new WshShell()).CreateShortcut(dialog.FileName);
+					string shortcutPath = dialog.FileName;
 
-					shortcut.TargetPath = App.EntryPath;
+					// Create empty .lnk file
+					System.IO.File.WriteAllBytes(shortcutPath, new byte[0]);
+					// Create a ShellLinkObject that references the .lnk file
+					Shell32.Shell shell = new Shell32.Shell();
+					Shell32.Folder folder = shell.NameSpace(Path.GetDirectoryName(shortcutPath));
+					Shell32.FolderItem folderItem = folder.Items().Item(Path.GetFileName(shortcutPath));
+					Shell32.ShellLinkObject shortcut = (Shell32.ShellLinkObject) folderItem.GetLink;
+
+					shortcut.Path = App.EntryPath;
 					shortcut.WorkingDirectory = App.EntryDirectory;
-					shortcut.IconLocation = MainWindowData.ProgramPath + ",0";
+					shortcut.SetIconLocation(MainWindowData.ProgramPath, 0);
 
 					shortcut.Description = String.Format("Run \"{0}\" in {1} locale",
 						Path.GetFileName(MainWindowData.ProgramPath),
@@ -95,7 +102,7 @@ namespace WizardGui
 						MainWindowData.ProgramPath,
 						string.Join(" ", ParseArguments(MainWindowData.ProgramArguments).Select(arg => "\"" + arg + "\"")));
 
-					shortcut.Save();
+					shortcut.Save(shortcutPath);
 				}
 			}
 			catch (Exception exception)
