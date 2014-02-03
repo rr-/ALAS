@@ -28,9 +28,9 @@ namespace WizardGui
 			if (!IniParser.Root.HasSection("Application"))
 				return;
 
-			var applicationSection = IniParser.Root["Application"];
+			var applicationSection = IniParser.Root.GetSection("Application");
 			if (applicationSection.HasKey("CheckAppLocalePresence"))
-				checkAppLocalePresence = (bool) applicationSection.GetBool("CheckAppLocalePresence");
+				checkAppLocalePresence = applicationSection.GetKey<bool>("CheckAppLocalePresence", true);
 		}
 
 		private void UpdateConfig()
@@ -38,8 +38,8 @@ namespace WizardGui
 			if (!IniParser.Root.HasSection("Application"))
 				IniParser.Root.AddSection("Application");
 
-			var applicationSection = IniParser.Root["Application"];
-			applicationSection.SetBool("CheckAppLocalePresence", checkAppLocalePresence);
+			var applicationSection = IniParser.Root.GetSection("Application");
+			applicationSection.SetKey("CheckAppLocalePresence", checkAppLocalePresence);
 		}
 
 		private void AppStartup(object sender, StartupEventArgs eventArgs)

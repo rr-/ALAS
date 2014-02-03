@@ -179,12 +179,12 @@ namespace WizardGui
 			if (!((App) Application.Current).IniParser.Root.HasSection("Gui"))
 				return;
 
-			var guiSection = ((App)Application.Current).IniParser.Root["Gui"];
-			MainWindowData.ProgramPath = guiSection.GetString("ProgramPath");
-			MainWindowData.ProgramArguments = guiSection.GetString("ProgramArguments");
-			MainWindowData.ProgramWorkingDirectory = guiSection.GetString("ProgramWorkingDirectory");
+			var guiSection = ((App)Application.Current).IniParser.Root.GetSection("Gui");
+			MainWindowData.ProgramPath = guiSection.GetKey("ProgramPath");
+			MainWindowData.ProgramArguments = guiSection.GetKey("ProgramArguments");
+			MainWindowData.ProgramWorkingDirectory = guiSection.GetKey("ProgramWorkingDirectory");
 			MainWindowData.SelectedLocale = MainWindowData.AvailableLocales
-				.FirstOrDefault(locale => locale.ToString() == guiSection.GetString("SelectedLocale"));
+				.FirstOrDefault(locale => locale.ToString() == guiSection.GetKey("SelectedLocale"));
 		}
 
 		private void UpdateConfig()
@@ -192,11 +192,11 @@ namespace WizardGui
 			if (!((App)Application.Current).IniParser.Root.HasSection("Gui"))
 				((App)Application.Current).IniParser.Root.AddSection("Gui");
 
-			var guiSection = ((App)Application.Current).IniParser.Root["Gui"];
-			guiSection.SetString("ProgramPath", MainWindowData.ProgramPath);
-			guiSection.SetString("ProgramArguments", MainWindowData.ProgramArguments);
-			guiSection.SetString("ProgramWorkingDirectory", MainWindowData.ProgramWorkingDirectory);
-			guiSection.SetString("SelectedLocale", MainWindowData.SelectedLocale != null ? MainWindowData.SelectedLocale.ToString() : "");
+			var guiSection = ((App)Application.Current).IniParser.Root.GetSection("Gui");
+			guiSection.SetKey("ProgramPath", MainWindowData.ProgramPath);
+			guiSection.SetKey("ProgramArguments", MainWindowData.ProgramArguments);
+			guiSection.SetKey("ProgramWorkingDirectory", MainWindowData.ProgramWorkingDirectory);
+			guiSection.SetKey("SelectedLocale", MainWindowData.SelectedLocale != null ? MainWindowData.SelectedLocale.ToString() : "");
 		}
 
 		static private IEnumerable<string> ParseArguments(string commandLine)
