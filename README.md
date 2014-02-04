@@ -1,5 +1,11 @@
 ## AppLocale Alternative Starter
 
+#### Download
+
+To get newest binaries head over to [releases](https://github.com/rr-/ALAS/releases) and download the last one.
+
+---
+
 #### What is it?
 
 Short version: it lets you run Japanese games.  
@@ -48,3 +54,11 @@ If you follow Microsoft's advice and set your global locale to Japanese, you eve
 ##### You can set current working directory
 
 I don't know if you would ever need it, but anyway - you *can* do it, whereas it is not possible to do with default AppLocale frontend whatsoever. I can imagine some applications requiring this feature, seeing that people still create locale-specific applications...
+
+---
+
+#### Troubleshooting
+
+###### I get "ERROR: The application failed to initialize properly (0xc0000135). Click on OK to terminate the application."
+
+Please install Microsoft .NET Framework 4. It's available [here](http://www.microsoft.com/en-us/download/details.aspx?id=17718).
