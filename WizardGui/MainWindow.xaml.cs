@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using AppLocaleLib;
@@ -109,11 +110,22 @@ namespace WizardGui
 						Path.GetFileName(MainWindowData.ProgramPath),
 						MainWindowData.SelectedLocale.LocaleInfo.LanguageName);
 
-					shortcut.Arguments = String.Format("--locale {0} --cwd \"{1}\" --path \"{2}\" -- {3}",
-						MainWindowData.SelectedLocale.LocaleInfo.LocaleName,
-						MainWindowData.ProgramWorkingDirectory,
-						MainWindowData.ProgramPath,
-						string.Join(" ", ParseArguments(MainWindowData.ProgramArguments).Select(arg => "\"" + arg + "\"")));
+					var argumentBuilder = new StringBuilder();
+
+					argumentBuilder.AppendFormat("--locale {0} ", MainWindowData.SelectedLocale.LocaleInfo.LocaleName);
+					argumentBuilder.AppendFormat("--path \"{0}\" ", MainWindowData.ProgramPath);
+
+					if (MainWindowData.ProgramWorkingDirectory != Path.GetDirectoryName(MainWindowData.ProgramPath))
+						argumentBuilder.AppendFormat("--cwd \"{0}\" ", MainWindowData.ProgramWorkingDirectory);
+
+					IEnumerable<string> programArgumentList = ParseArguments(MainWindowData.ProgramArguments);
+					if (programArgumentList.Count() > 0)
+					{
+						argumentBuilder.AppendFormat("-- ");
+						argumentBuilder.Append(string.Join(" ", programArgumentList.Select(arg => "\"" + arg + "\"")));
+					}
+
+					shortcut.Arguments = argumentBuilder.ToString().Trim();
 
 					shortcut.Save(shortcutPath);
 				}

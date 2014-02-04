@@ -36,7 +36,7 @@ namespace AppLocaleLib
 			{
 				Arguments = string.Join(" ", arguments.Select(arg => "\"" + arg + "\"")),
 				FileName = programPath,
-				WorkingDirectory = workingDirectory ?? string.Empty
+				WorkingDirectory = workingDirectory,
 			};
 
 			Process.Start(start);
