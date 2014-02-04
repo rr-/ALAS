@@ -4,6 +4,7 @@
 		x:Class="WizardGui.App"
 		Startup="AppStartup"
 		Exit="AppExit"
+		DispatcherUnhandledException="AppUnhandledException"
 		StartupUri="MainWindow.xaml">
 	<Application.Resources>
 		<ResourceDictionary>

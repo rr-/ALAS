@@ -122,5 +122,11 @@ namespace WizardGui
 			UpdateConfig();
 			IniParser.Save();
 		}
+
+		private void AppUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+		{
+			MessageBox.Show(e.Exception.ToString());
+			Environment.Exit(1);
+		}
 	}
 }
