@@ -226,6 +226,8 @@ namespace WizardGui
 
 		static private IEnumerable<string> ParseArguments(string commandLine)
 		{
+			if (commandLine == null)
+				return new List<string>();
 			const string fullRegex = "^(((?<quote>([\"']|))(?<arg>.+?)\\k<quote>)(\\s+|$))+";
 			var matches = Regex.Match(commandLine, fullRegex);
 			return matches.Groups["arg"].Captures.Cast<Capture>().Select(group => group.Value);

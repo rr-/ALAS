@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -73,7 +74,7 @@ namespace WizardGui
 			if (result == MessageBoxResult.Yes)
 			{
 				const string downloadLink = "http://www.microsoft.com/en-us/download/details.aspx?id=13209";
-				System.Diagnostics.Process.Start(downloadLink);
+				Process.Start(downloadLink);
 				Environment.Exit(1);
 			}
 		}
