@@ -28,7 +28,7 @@ namespace AppLocaleLib
 			if (!File.Exists(programPath))
 				throw new FileNotFoundException(String.Format("\"{0}\" not found", programPath));
 
-			uint localeId = localeInfoService.LocaleNameToLocaleId(localeName);
+			uint localeId = localeInfoService.LocaleNameToLocaleId(localeName).Value;
 			Environment.SetEnvironmentVariable("__COMPAT_LAYER", "#ApplicationLocale");
 			Environment.SetEnvironmentVariable("AppLocaleID", String.Format("{0:x4}", localeId));
 			Environment.SetEnvironmentVariable("LANG", localeName);

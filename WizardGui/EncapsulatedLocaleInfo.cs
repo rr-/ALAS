@@ -13,7 +13,7 @@ namespace WizardGui
 
 		public override string ToString()
 		{
-			return string.Format("{0}", LocaleInfo.DisplayEnglishName);
+			return string.Format("{0}", LocaleInfo.DisplayName);
 		}
 	}
 }

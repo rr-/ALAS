@@ -72,7 +72,7 @@ namespace WizardGui
 					Filter = "Shortcuts (.lnk)|*.lnk",
 					FileName = String.Format("{0}-{1}",
 						Path.GetFileNameWithoutExtension(MainWindowData.ProgramPath),
-						MainWindowData.SelectedLocale.LocaleInfo.LanguageEnglishName.ToLower())
+						MainWindowData.SelectedLocale.LocaleInfo.LanguageName.ToLower())
 				};
 
 				bool? result = dialog.ShowDialog();
@@ -82,11 +82,24 @@ namespace WizardGui
 
 					// Create empty .lnk file
 					System.IO.File.WriteAllBytes(shortcutPath, new byte[0]);
-					// Create a ShellLinkObject that references the .lnk file
-					Shell32.Shell shell = new Shell32.Shell();
-					Shell32.Folder folder = shell.NameSpace(Path.GetDirectoryName(shortcutPath));
+
+					// Create a Shell32.Folder that points to destination folder
+					Type shellAppType = Type.GetTypeFromProgID("Shell.Application");
+
+					var folder = (Shell32.Folder) shellAppType.InvokeMember(
+						"NameSpace",
+						System.Reflection.BindingFlags.InvokeMethod,
+						null,
+						Activator.CreateInstance(shellAppType),
+						new object[]
+						{
+							Path.GetDirectoryName(shortcutPath)
+						});
+
 					Shell32.FolderItem folderItem = folder.Items().Item(Path.GetFileName(shortcutPath));
-					Shell32.ShellLinkObject shortcut = (Shell32.ShellLinkObject) folderItem.GetLink;
+
+					// Finally, create a Shell32.ShellLinkObject
+					var shortcut = (Shell32.ShellLinkObject) folderItem.GetLink;
 
 					shortcut.Path = App.EntryPath;
 					shortcut.WorkingDirectory = App.EntryDirectory;
@@ -94,7 +107,7 @@ namespace WizardGui
 
 					shortcut.Description = String.Format("Run \"{0}\" in {1} locale",
 						Path.GetFileName(MainWindowData.ProgramPath),
-						MainWindowData.SelectedLocale.LocaleInfo.LanguageEnglishName);
+						MainWindowData.SelectedLocale.LocaleInfo.LanguageName);
 
 					shortcut.Arguments = String.Format("--locale {0} --cwd \"{1}\" --path \"{2}\" -- {3}",
 						MainWindowData.SelectedLocale.LocaleInfo.LocaleName,
